@@ -12,11 +12,15 @@ h2 {
 .color-primary-4 { color: #17A9FA }
 
 .nd-pageheader {
+  font-weight: bold;
   padding: 2rem 15px;
   margin-bottom: 1.5rem;
   color: white;
   text-align: center;
-  background-color: #233BF5;
+  background-image: url('2.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;;
 }
 
 .nd-pageheader a, .nd-pageheader a.likelink {
@@ -28,7 +32,10 @@ h2 {
   margin-top: 1.5rem;
   padding: 1rem;
   text-align: center;
-  background-color: #233BF5;
+  background-image: url('2.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;;
 }
 
 .nd-pagefooter a {
