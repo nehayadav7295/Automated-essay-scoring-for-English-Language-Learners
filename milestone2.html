@@ -58,12 +58,29 @@
  
 <h2 align="justify">Implementation Details</h2>
 <div align = "center">
-    <a href="" target="_blank">Github repository with code</a>
+    <a href="https://github.com/TanmayPK/Automatic-Essay-Grading-Project" target="_blank">Github repository with code</a>
 </div>
-<p align="justify">We will implemented R&#178; BERT (BERT Model with Regression and Ranking). In our model, BERT is used to learn text representations to capture deep semantics. Then a fully connected neural network is used to map the representations to scores. Finally, regression loss and batch-wise ranking loss constrain the scores together, which are jointly optimized with dynamic combination weights
-We will also illustrate the attention weights on different essays types like an argumentative essay and a narrative essay. The self-attention can illustrate what has been captured as most conjunction words that reveal the logical structure, and most key concepts that show the topic shifting of the narratives.</p>
+<p align="justify">For this milestone, we explored the dataset and analysed the structural make of the dataset. We discovered that there are different types of essays that the model will need to accomodate for. For example, some are argumentative while others are narrative in their goals. First, we preprocess the data by converting the entire text to lowercase and removing sentence tokens that are not needed such as the newline escape characters. By analysing the dataset we determined that there are a lot of tokens above the 512 range of the BERT input, so the tokenized representations were then converted to split tokens with 512 as constant length. The sentence encodings smaller than this were padded with zeros, while longer sentences were truncated to fit the max length. 
+  <br>
+  <br>
+  <br>
+  Each criterion was explored and we visualized the kind of words that were common in each category amongst the cream of the crop when it came to essay scores per category. For our main model we fine tuned a pretrained BERT model from the HuggingFace transformers library. The output of this BERT gave us learned encodings that were then fed into a fully connected model to get the actual predictions. The loss function we used was MCRMSE. We experimented with different learning rates and 1e-4 and 1e-5 seemed to perform the best. A smaller batch size was significantly better for the validation accuracy here since the total number of samples were relatively low when the depth of the model is considered. For the optimizer we picked Adam. While our implenmentation differed from the base paper in that we did not have a ranking algorithm to go with our regression, it performed very well on the training dataset. It faced some problems when it came to validation loss as it was very evidently overfitting to the training loss.</p>
 <h2 align="justify">Initial Findings</h2>
-<p align="justify">The diagram below shows the wordcloud of most occuring words in the essay and length of essays respectively. The length of the essay is an important factor since pretrained BERT takes maximum of 512 tokens as input hence we have to reduce the token lenths for some essays in a efficient way so that it only takes the most important tokens as input. We will analyse the importance of each token using attention heads/ self-attention of BERT model.</p>
+<p align="justify">Figure 3 shows the word cloud of the most occuring words in every category of grading for top scorers with max scores in each bracket. Interestingly, there are some common themes that reoccur across every cloud. Through additional data analysis we determined that this was the consequence of a common topic. However, even then there are certain words that are apparently more frequently used in essays that scored well in particular brackets. For example, life seems to be more frequently occuring in essays where the vocabulary was very highly scored, but is very hard to spot in the cohesion cloud because it is significantly less frequent. In general, this gives a good indication that these essays were graded more based on topical information as opposed to connecting words. 
+
+  <br>
+  <br>
+  <br>
+  Figure 4 shows a plot of the lengths of tokens for essays across the training dataset. While most essays are below the threshold of input for BERT (512 tokens), a significant number of essays are much longer, again supporting why they must be truncated.
+  
+  <br>
+  <br>
+  <br>
+  Figure 5 is a plot of the training and validation MCRMSE losses. Interestingly, it overfits the training data very quickly, while the validation loss keeps bouncing between 0.50 and 0.58. We experimented with different hyperparameters such as changing the batch size and learning rate, but this kind of pattern was still quite apparent. This can in part be attributed to the relatively small amount of data available when compared to how deep the model is. To prevent this and improve performance on the validation dataset, we have identified some strategies which seem promising.
+</p>
+<br>
+  <br>
+  <br>
         <figure>
         <img src="cloud.jpg" caption="Fig 3. Word cloud in high scoring essays" width = "1100" height="300">
         <figcaption>Fig 3. Word cloud in high scoring essays</figcaption>
@@ -74,13 +91,16 @@ We will also illustrate the attention weights on different essays types like an 
         <figcaption>Fig 4. Length of tokens across essays &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Fig 5. Training and validation losses</figcaption>
         </figure>
 <h2 align="justify">Future Plans</h2>
-<p align="justify">We have implemented the base model from an existing research paper, we intend to build a new model on the top of this model to improve the performance of current model.
-We also intend to show the attention heads of the model to showcase the performance of model for differnt category of essays</p>
+<p align="justify">Our results on this milestone gave us a great baseline for our task. The model is performing very well on the training dataset, but it seems to struggle with generalizing. Based on our initial findings, we have identified some areas where there can be potential improvements. The original paper combines ranking with regression, which would be a natural next step to incorporate with our fully connected layer. However, given the unique nature of the problem we believe there are other avenues worth exploring. One such path would be to visualize the worst performing encodings and their attention weights, to see where exactly the attention is landing.
+  <br>
+  <br>
+  Since BERT is not a dynamic masking algorithm, we are considering a simple way to incorporate dynamic masking by adding a single layer at the beginning of the input. The goal of this layer would be to learn good mappings for masking targets over the period of training. Conceptually, this should ideally be the words that are most indicative of good knowldge on the essay, but this cannot be done manually because that would be far too tedious. Therefore, we hope by adding a simple layer the single random initialization of the masks across every epoch in BERT's input can be switched for intelligently selected masked words while keeping the complexity relatively low to prevent overfitting. Figure 6 shows a very basic architechture of what this might look like at a very high level of abstraction.
+</p>
 
 <div>
   <figure>
   <img src="architecture2.jpg" caption="Architecture of our Model" width = "400" height="400">
-  <figcaption>Fig 5. Potential Model Improvement</figcaption>
+  <figcaption>Fig 6. Potential Model Improvement</figcaption>
   </figure>
 </div>
 
