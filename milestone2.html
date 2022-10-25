@@ -38,20 +38,51 @@
 <h1>Automated essay scoring for English Language Learners</h1>
 
 <h2 align="justify">Figure</h2>
-
-<h2 align = "justify">Conceptual Review</h2>
-
-<h2 align="justify">Implementation Details</h2>
-<div align = "left">
-    <a href="" target="_blank">Github repository with code</a>
-    <div align = "right">
+    <div align = "center">
         <figure>
-        <img src="cloud.jpg" caption="Word cloud in high scoring essays" width = "300" height="300">
-        <figcaption>Word cloud in high scoring essays</figcaption>
+        <img src="architecture1.jpg" caption="Architecture of our Model" width = "600" height="600">
+        <figcaption>Fig 1. Model Architecture</figcaption>
         </figure>
     </div>
+
+<h2 align = "justify">Conceptual Review</h2>
+<p align="justify"> The main challenge we aim to work towards with this project is the problem of automatic essay scoring of English Language Learners. English Language learners are students who are learning English as a second language. In many ways existing automated graders can be quite biased towards the language proficiency and may overlook the actual conceptual scaffolding of the essay. This challenge is part of an active Kaggle competition [2] and we've used the dataset curated for this competition. The dataset comprises of essays of varying lengths from grades 8 to 12, scored on 6 different scales, namely cohesion, syntax, vocabulary,phraseology, grammar and conventions. These scales are the labels which have been derived from human scoring, and each correspond to a very specific factor the grader is looking for. Each set of labels that are predicted are further avaluated by the MSRMSE loss as we can see in figure 2, which essentially means over the root mean squared error for every column (6 in this case). Nt is the number of scored ground truth target columns, and y and y' are the actual and predicted values, respectively. Since BERT based models learn contextual encodings, we felt it was a great fit for this task where the model should ideally be considering the semantic meaning of the material as opposed to just the grammatical structure.
+  <br>
+  <br>
+  <figure>
+    <img src="msrmse.jpg" caption="Word cloud in high scoring essays" width = "400" height="100">
+    <figcaption>Fig 2. MSRMSE Loss (source: <a href="https://www.kaggle.com/competitions/feedback-prize-english-language-learning/overview/evaluation" target="_blank"> Kaggle</a>)</figcaption>
+  </figure>
+  <p align="justify"> With this behavior in mind, we picked the work of Yang et al. [1] as our base paper. Their work is largely about general great performance on automatic essay grading. Indeed by the literature review in this paper, transformer based representations seem to perform better than traditional recurrent layers. The main model that is proposed in this paper is called R2BERT, which is essentially the output of a BERT encoding fed into a mapping function, which is a composite function using both regression and ranking. For this model, the input is tokenized in a very specific way. Special tokens are used to denote specific parts of the sentence. [CLS] is used at the beginning of each essay and [SEP] is used to separate new sentences from each other. What makes BERT work really well with contextual information however, is its use of self-attention and masking. BERT is a masked language model, where some random words are masked before learning the encoding, where it tries to predict what important word might have been masked. Self attention assigns weights based on the context of other words in the same locality, so this would work well for a task which is more concerned with semantics. From the results in this work, a combined R2BERT model achieves state of the art performance. We believe that this great performance on general essay grading can be a good base to explore how to improve performance in a more niche environment such as grading ELLs (English Language Learners).</p>
+  
+ 
+<h2 align="justify">Implementation Details</h2>
+<div align = "center">
+    <a href="" target="_blank">Github repository with code</a>
 </div>
-<h2 align="justify">Initial Findings and Future Plans</h2>
+<p align="justify">We will implemented R&#178; BERT (BERT Model with Regression and Ranking). In our model, BERT is used to learn text representations to capture deep semantics. Then a fully connected neural network is used to map the representations to scores. Finally, regression loss and batch-wise ranking loss constrain the scores together, which are jointly optimized with dynamic combination weights
+We will also illustrate the attention weights on different essays types like an argumentative essay and a narrative essay. The self-attention can illustrate what has been captured as most conjunction words that reveal the logical structure, and most key concepts that show the topic shifting of the narratives.</p>
+<h2 align="justify">Initial Findings</h2>
+<p align="justify">The diagram below shows the wordcloud of most occuring words in the essay and length of essays respectively. The length of the essay is an important factor since pretrained BERT takes maximum of 512 tokens as input hence we have to reduce the token lenths for some essays in a efficient way so that it only takes the most important tokens as input. We will analyse the importance of each token using attention heads/ self-attention of BERT model.</p>
+        <figure>
+        <img src="cloud.jpg" caption="Fig 3. Word cloud in high scoring essays" width = "1100" height="300">
+        <figcaption>Fig 3. Word cloud in high scoring essays</figcaption>
+        <br>
+        <br>
+        <img src="tokens.jpg" caption="length fo essay" width = "500" height="500">
+        <img src="Training.jpg" caption="traning losses" width = "500" height="500">
+        <figcaption>Fig 4. Length of tokens across essays &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Fig 5. Training and validation losses</figcaption>
+        </figure>
+<h2 align="justify">Future Plans</h2>
+<p align="justify">We have implemented the base model from an existing research paper, we intend to build a new model on the top of this model to improve the performance of current model.
+We also intend to show the attention heads of the model to showcase the performance of model for differnt category of essays</p>
+
+<div>
+  <figure>
+  <img src="architecture2.jpg" caption="Architecture of our Model" width = "400" height="400">
+  <figcaption>Fig 5. Potential Model Improvement</figcaption>
+  </figure>
+</div>
 
 <h2 align = "justify">Team Members</h2>
                                                    
