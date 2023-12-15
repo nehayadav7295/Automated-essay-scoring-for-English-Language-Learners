@@ -57,15 +57,4 @@
 </footer>
 
 </body>
-<script>
-$(document).on('click', '.clickselect', function(ev) {
-  var range = document.createRange();
-  range.selectNodeContents(this);
-  var sel = window.getSelection();
-  sel.removeAllRanges();
-  sel.addRange(range);
-});
-// Google analytics below.
-window.dataLayer = window.dataLayer || [];
-</script>
 </html>
