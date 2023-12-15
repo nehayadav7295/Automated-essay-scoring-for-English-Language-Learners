@@ -1,6 +1,5 @@
 # Assess the language proficiency for English Language Learners
 
-<!doctype html>
 <html lang="en">
 <head>
 <title>Assess the language proficiency for English Language Learners
@@ -61,12 +60,6 @@
 </p>
 <p align="justify">[4] Bonthu, S., Rama Sree, S., &amp; Krishna Prasad, M. H. M. (1970, January 1). Automated short answer grading using Deep learning: A survey. SpringerLink. Retrieved September 29, 2022, from https://link.springer.com/chapter/10.1007/978-3-030-84060-0_5 </p>
 <p align="justify">[5] Ramesh, D., &amp; Sanampudi, S. K. (2021, September 23). An automated essay scoring systems: A systematic literature review - artificial intelligence review. SpringerLink. Retrieved September 29, 2022, from https://link.springer.com/article/10.1007/s10462-021-10068-2#:~:text=Automated%20essay%20scoring%20(AES)%20is,(1973). </p>
-
-<h2>Team Members</h2>
-                                                   
-<p align="justify" >1. Tanmay Khokle</p>
-<p align="justify">2. Neha Yadav</p>
-
 
 </div><!--col-->
 </div><!--row -->
