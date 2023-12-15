@@ -1,4 +1,3 @@
-# Assess the language proficiency for English Language Learners
 
 <html lang="en">
 <head>
